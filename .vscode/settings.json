@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.format.enable": false,
+  "less.format.enable": false,
+  "scss.format.enable": false,
+  "razor.format.enable": false,
+  "csharp.format.enable": false,
+  "html.format.enable": false,
+  "json.format.enable": false,
+  "typescript.format.enable": false,
+  "javascript.format.enable": false
+}
