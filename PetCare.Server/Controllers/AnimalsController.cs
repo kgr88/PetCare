@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetCare.Server.Models;
+using PetCare.Server.Models.DTOs;
 using PetCare.Server.Services;
 using System.Security.Claims;
 
@@ -18,9 +19,30 @@ public class AnimalsController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Animal>>> GetAnimals()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId == null) return Unauthorized();
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
         var animals = await animalService.GetUserAnimals(userId);
         return Ok(animals);
     }
+
+    [HttpPost]
+    public async Task<ActionResult> AddAnimal([FromBody] AnimalDTO animalDto)
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+        try
+        {
+            var animal = await animalService.AddAnimal(animalDto, userId);
+            return CreatedAtAction(nameof(GetAnimals), new { id = animal.Id }, animal);
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+
+
+    }
+
 }
