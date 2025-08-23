@@ -6,6 +6,6 @@ public class AnimalDTO
     public string Name { get; set; } = string.Empty;
     public string Species { get; set; } = string.Empty;
     public string? Breed { get; set; }
-    public DateTime? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public string? MicrochipId { get; set; }
 }
