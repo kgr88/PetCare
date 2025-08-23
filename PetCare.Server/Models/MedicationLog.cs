@@ -3,8 +3,8 @@
 public class MedicationLog
 {
     public int Id { get; set; }
-    public int ScheduleId { get; set; }
+    public int MedicationId { get; set; }
     public DateTime TimeTaken { get; set; }
-    public MedicationSchedule MedicationSchedule { get; set; } = null!;
+    public Medication Medication { get; set; } = null!;
 
 }

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import AuthorizeView from '../Components/AuthorizeView';
-import AddAnimal from '../Components/Animals/addAnimal';
+import AddAnimal from '../Components/Animals/AddAnimal';
 import type { Animal, FormData } from '../types';
 
 export default function Animals() {

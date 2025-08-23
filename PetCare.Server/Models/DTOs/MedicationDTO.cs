@@ -1,8 +1,7 @@
-﻿namespace PetCare.Server.Models;
+﻿namespace PetCare.Server.Models.DTOs;
 
-public class Medication
+public class MedicationDTO
 {
-    public int Id { get; set; }
     public int AnimalId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Dosage { get; set; }
@@ -12,6 +11,4 @@ public class Medication
     public string Type { get; set; } = string.Empty;
     public string? FrequencyType { get; set; }
     public int? Frequency { get; set; }
-    public ICollection<MedicationLog> MedicationLogs { get; } = new List<MedicationLog>();
-
 }

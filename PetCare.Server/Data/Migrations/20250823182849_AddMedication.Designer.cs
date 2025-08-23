@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetCare.Server.Data;
 
@@ -11,9 +12,11 @@ using PetCare.Server.Data;
 namespace PetCare.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250823182849_AddMedication")]
+    partial class AddMedication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,7 +307,7 @@ namespace PetCare.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Medications");
+                    b.ToTable("Medication");
                 });
 
             modelBuilder.Entity("PetCare.Server.Models.MedicationLog", b =>
@@ -316,6 +319,9 @@ namespace PetCare.Server.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MedicationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScheduleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeTaken")

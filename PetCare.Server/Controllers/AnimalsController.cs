@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PetCare.Server.Models;
 using PetCare.Server.Models.DTOs;
 using PetCare.Server.Services;
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
 namespace PetCare.Server.Controllers;
@@ -12,8 +11,8 @@ namespace PetCare.Server.Controllers;
 [Route("api/[controller]")]
 public class AnimalsController : Controller
 {
-    private readonly AnimalService animalService;
-    public AnimalsController(AnimalService animalService)
+    private readonly IAnimalService animalService;
+    public AnimalsController(IAnimalService animalService)
     {
         this.animalService = animalService;
     }
