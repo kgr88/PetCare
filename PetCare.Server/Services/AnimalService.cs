@@ -50,4 +50,25 @@ public class AnimalService : IAnimalService
         await context.SaveChangesAsync();
         return animal;
     }
+
+    public async Task<AnimalDTO?> GetAnimalDetails(int animalId)
+    {
+        var animalDetails = await context.Animals
+            .Where(a => a.Id == animalId)
+            .SingleOrDefaultAsync();
+
+        if (animalDetails == null)
+            return null;
+
+        return new AnimalDTO
+        {
+            Id = animalDetails.Id,
+            Name = animalDetails.Name,
+            Breed = animalDetails.Breed,
+            Species = animalDetails.Species,
+            DateOfBirth = animalDetails.DateOfBirth,
+            MicrochipId = animalDetails.MicrochipId
+        };
+    }
+
 }

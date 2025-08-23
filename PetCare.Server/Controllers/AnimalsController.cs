@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetCare.Server.Models;
 using PetCare.Server.Models.DTOs;
 using PetCare.Server.Services;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
 namespace PetCare.Server.Controllers;
@@ -36,13 +37,22 @@ public class AnimalsController : Controller
             var animal = await animalService.AddAnimal(animalDto, userId);
             return CreatedAtAction(nameof(GetAnimals), new { id = animal.Id }, animal);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
-
-
-
     }
 
+    [HttpGet]
+    [Route("{animalId:int}")]
+    public async Task<ActionResult> GetAnimalDetails(int animalId)
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
+        var animalDetails = await animalService.GetAnimalDetails(animalId);
+        if (animalDetails == null)
+            return NotFound();
+        return Ok(animalDetails);
+    }
 }

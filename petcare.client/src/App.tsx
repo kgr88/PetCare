@@ -5,6 +5,7 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 import Animals from './Pages/Animals';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AnimalDetails from './Pages/AnimalDetails';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/animals" element={<Animals />} />
+          <Route path="/animals/:id" element={<AnimalDetails />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
