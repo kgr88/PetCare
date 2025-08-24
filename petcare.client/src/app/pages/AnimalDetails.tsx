@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import AuthorizeView from '../Components/AuthorizeView';
+import AuthorizeView from '../../features/auth/AuthorizeView';
 import { useQuery } from '@tanstack/react-query';
 
 export default function AnimalDetails() {

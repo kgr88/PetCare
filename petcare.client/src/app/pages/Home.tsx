@@ -1,5 +1,7 @@
-import LogoutLink from '../Components/LogoutLink.tsx';
-import AuthorizeView, { AuthorizedUser } from '../Components/AuthorizeView.tsx';
+import LogoutLink from '../../features/auth/LogoutLink.tsx';
+import AuthorizeView, {
+  AuthorizedUser,
+} from '../../features/auth/AuthorizeView.tsx';
 
 export default function Home() {
   return (

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface AddAnimalProps {
   validateForm: (formData: any) => void;
@@ -69,7 +70,7 @@ export default function AddAnimal({ validateForm }: AddAnimalProps) {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Add Animal</button>
+        <Button type="submit">Add Animal</Button>
       </form>
     </>
   );

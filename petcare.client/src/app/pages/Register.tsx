@@ -29,13 +29,13 @@ export default function Register() {
     if (!email || !password || !confirmPassword) {
       setError('Please fill in all fields.');
       return;
-    } 
-    
+    }
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError('Please enter a valid email address.');
       return;
-    } 
-    
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
@@ -63,7 +63,11 @@ export default function Register() {
         try {
           const parsedError = JSON.parse(errorData);
           const errorMessages = Object.values(parsedError.errors || {}).flat();
-          setError(errorMessages.length > 0 ? errorMessages.join(', ') : 'Registration failed.');
+          setError(
+            errorMessages.length > 0
+              ? errorMessages.join(', ')
+              : 'Registration failed.'
+          );
         } catch {
           setError(`Registration failed. ${errorData || 'Please try again.'}`);
         }
@@ -119,12 +123,22 @@ export default function Register() {
           <button type="submit">Register</button>
         </div>
         <div>
-          <button type="button" onClick={handleLoginClick}>Go to Login</button>
+          <button type="button" onClick={handleLoginClick}>
+            Go to Login
+          </button>
         </div>
       </form>
 
-      {error && <p className="error" style={{color: 'red'}}>{error}</p>}
-      {success && <p className="success" style={{color: 'green'}}>{success}</p>}
+      {error && (
+        <p className="error" style={{ color: 'red' }}>
+          {error}
+        </p>
+      )}
+      {success && (
+        <p className="success" style={{ color: 'green' }}>
+          {success}
+        </p>
+      )}
     </div>
   );
 }
