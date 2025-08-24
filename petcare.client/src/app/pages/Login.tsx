@@ -18,7 +18,7 @@ export default function Login() {
   };
 
   const handleRegisterClick = () => {
-    navigate('/register');
+    navigate('/register-page');
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

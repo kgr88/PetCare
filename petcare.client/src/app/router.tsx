@@ -8,8 +8,8 @@ import AnimalDetails from './pages/AnimalDetails';
 export default function AppRouter() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login-page" element={<Login />} />
+      <Route path="/register-page" element={<Register />} />
       <Route path="/" element={<Home />} />
       <Route path="/animals" element={<Animals />} />
       <Route path="/animals/:id" element={<AnimalDetails />} />

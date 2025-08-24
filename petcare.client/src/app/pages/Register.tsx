@@ -11,7 +11,7 @@ export default function Register() {
   const [success, setSuccess] = useState('');
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate('/login-page');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +56,7 @@ export default function Register() {
       if (response.ok) {
         setSuccess('Registration successful! You can now log in.');
         // Optionally redirect to login page
-        setTimeout(() => navigate('/login'), 2000);
+        setTimeout(() => navigate('/login-page'), 2000);
       } else {
         // Parse error response
         const errorData = await response.text();

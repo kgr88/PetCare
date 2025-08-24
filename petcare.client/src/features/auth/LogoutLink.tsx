@@ -14,7 +14,7 @@ export default function LogoutLink(props: { children: React.ReactNode }) {
     })
       .then((data) => {
         if (data.ok) {
-          navigate('/login');
+          navigate('/login-page');
         } else {
         }
       })
