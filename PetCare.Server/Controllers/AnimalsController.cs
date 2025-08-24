@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetCare.Server.Models;
 using PetCare.Server.Models.DTOs;
-using PetCare.Server.Services;
+using PetCare.Server.Services.Interfaces;
 using System.Security.Claims;
 
 namespace PetCare.Server.Controllers;

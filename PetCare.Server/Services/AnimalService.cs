@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetCare.Server.Data;
 using PetCare.Server.Models;
 using PetCare.Server.Models.DTOs;
+using PetCare.Server.Services.Interfaces;
 
 namespace PetCare.Server.Services;
 

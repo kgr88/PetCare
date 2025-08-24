@@ -5,6 +5,7 @@ using PetCare.Server.Data;
 using PetCare.Server.Mappings;
 using PetCare.Server.Models;
 using PetCare.Server.Services;
+using PetCare.Server.Services.Interfaces;
 using System.Security.Claims;
 
 namespace PetCare.Server;
@@ -26,8 +27,9 @@ public class Program
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
         builder.Services.AddScoped<IAnimalService, AnimalService>();
-        builder.Services.AddScoped<MedicationService>();
-        builder.Services.AddScoped<MedicationLogService>();
+        builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+        builder.Services.AddScoped<IMedicationService, MedicationService>();
+        builder.Services.AddScoped<IMedicationLogService, MedicationLogService>();
         builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
         var app = builder.Build();
 

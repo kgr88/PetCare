@@ -1,7 +1,6 @@
-﻿using PetCare.Server.Models;
-using PetCare.Server.Models.DTOs;
+﻿using PetCare.Server.Models.DTOs;
 
-namespace PetCare.Server.Services;
+namespace PetCare.Server.Services.Interfaces;
 
 public interface IAnimalService
 {

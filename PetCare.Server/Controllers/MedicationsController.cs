@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PetCare.Server.Models;
 using PetCare.Server.Models.DTOs;
-using PetCare.Server.Services;
+using PetCare.Server.Services.Interfaces;
 using System.Security.Claims;
 
 namespace PetCare.Server.Controllers;
@@ -12,8 +10,8 @@ namespace PetCare.Server.Controllers;
 [ApiController]
 public class MedicationsController : ControllerBase
 {
-    private readonly MedicationService medicationService;
-    public MedicationsController(MedicationService medicationService)
+    private readonly IMedicationService medicationService;
+    public MedicationsController(IMedicationService medicationService)
     {
         this.medicationService = medicationService;
     }

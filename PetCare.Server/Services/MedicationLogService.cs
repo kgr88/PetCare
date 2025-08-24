@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using PetCare.Server.Data;
 using PetCare.Server.Models;
 using PetCare.Server.Models.DTOs;
-
+using PetCare.Server.Services.Interfaces;
 namespace PetCare.Server.Services;
 
-public class MedicationLogService
+public class MedicationLogService : IMedicationLogService
 {
     private readonly AppDbContext context;
     private readonly IMapper mapper;
