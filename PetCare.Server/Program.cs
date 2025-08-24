@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetCare.Server.Data;
+using PetCare.Server.Mappings;
 using PetCare.Server.Models;
 using PetCare.Server.Services;
 using System.Security.Claims;
@@ -26,6 +27,7 @@ public class Program
         builder.Services.AddOpenApi();
         builder.Services.AddScoped<IAnimalService, AnimalService>();
         builder.Services.AddScoped<MedicationService>();
+        builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
         var app = builder.Build();
 
         app.UseDefaultFiles();
