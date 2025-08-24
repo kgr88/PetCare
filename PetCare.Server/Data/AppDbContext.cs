@@ -13,6 +13,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Animal> Animals { get; set; }
     public DbSet<Medication> Medications { get; set; }
     public DbSet<MedicationLog> MedicationLogs { get; set; }
+    public DbSet<Appointment> Appointments { get; set; } 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -24,5 +25,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 
         builder.ApplyConfiguration(new AnimalConfiguration());
         builder.ApplyConfiguration(new MedicationConfiguration());
+        builder.ApplyConfiguration(new AppointmentConfiguration());
     }
 }

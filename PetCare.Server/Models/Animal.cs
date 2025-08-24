@@ -9,4 +9,6 @@ public class Animal
     public DateOnly? DateOfBirth { get; set; }
     public string? MicrochipId { get; set; }
     public string OwnerId { get; set; } = string.Empty;
+    public ICollection<Medication> Medications { get; } = new List<Medication>();
+    public ICollection<Appointment> Appointments { get; } = new List<Appointment>();
 }

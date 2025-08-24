@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetCare.Server.Data;
 
@@ -11,9 +12,11 @@ using PetCare.Server.Data;
 namespace PetCare.Server.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824025158_AddAppointments")]
+    partial class AddAppointments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,8 +288,6 @@ namespace PetCare.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnimalId");
-
                     b.ToTable("Appointments");
                 });
 
@@ -333,8 +334,6 @@ namespace PetCare.Server.Data.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnimalId");
 
                     b.ToTable("Medications");
                 });
@@ -420,28 +419,6 @@ namespace PetCare.Server.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PetCare.Server.Models.Appointment", b =>
-                {
-                    b.HasOne("PetCare.Server.Models.Animal", "Animal")
-                        .WithMany("Appointments")
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Animal");
-                });
-
-            modelBuilder.Entity("PetCare.Server.Models.Medication", b =>
-                {
-                    b.HasOne("PetCare.Server.Models.Animal", "Animal")
-                        .WithMany("Medications")
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Animal");
-                });
-
             modelBuilder.Entity("PetCare.Server.Models.MedicationLog", b =>
                 {
                     b.HasOne("PetCare.Server.Models.Medication", "Medication")
@@ -451,13 +428,6 @@ namespace PetCare.Server.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Medication");
-                });
-
-            modelBuilder.Entity("PetCare.Server.Models.Animal", b =>
-                {
-                    b.Navigation("Appointments");
-
-                    b.Navigation("Medications");
                 });
 
             modelBuilder.Entity("PetCare.Server.Models.ApplicationUser", b =>

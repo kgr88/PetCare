@@ -13,5 +13,6 @@ public class Medication
     public string? FrequencyType { get; set; }
     public int? Frequency { get; set; }
     public ICollection<MedicationLog> MedicationLogs { get; } = new List<MedicationLog>();
+    public Animal Animal { get; set; } = null!;
 
 }
