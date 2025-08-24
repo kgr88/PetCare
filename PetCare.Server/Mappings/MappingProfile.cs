@@ -10,5 +10,6 @@ public class MappingProfile : Profile
     {
         CreateMap<Medication, MedicationDTO>().ReverseMap();
         CreateMap<Animal, AnimalDTO>().ReverseMap();
+        CreateMap<MedicationLog, MedicationLogDTO>().ReverseMap();
     }
 }

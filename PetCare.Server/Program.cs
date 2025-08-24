@@ -27,6 +27,7 @@ public class Program
         builder.Services.AddOpenApi();
         builder.Services.AddScoped<IAnimalService, AnimalService>();
         builder.Services.AddScoped<MedicationService>();
+        builder.Services.AddScoped<MedicationLogService>();
         builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
         var app = builder.Build();
 
