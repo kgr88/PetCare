@@ -1,4 +1,6 @@
-﻿namespace PetCare.Server.Models;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace PetCare.Server.Models;
 
 public class Animal
 {
@@ -11,4 +13,5 @@ public class Animal
     public string OwnerId { get; set; } = string.Empty;
     public ICollection<Medication> Medications { get; } = new List<Medication>();
     public ICollection<Appointment> Appointments { get; } = new List<Appointment>();
+    public ApplicationUser Owner { get; set; } = null!;
 }

@@ -24,6 +24,16 @@ public class MedicationService : IMedicationService
         return mapper.Map<IEnumerable<MedicationDTO>>(animalMeds);
     }
 
+    public async Task<IEnumerable<UserMedsDTO>> GetAllMeds(string ownerId)
+    {
+        var animalMeds = await context.Medications
+        .Include(m => m.Animal)
+        .Where(m => m.Animal.OwnerId == ownerId)
+        .ToListAsync();
+
+        return mapper.Map<IEnumerable<UserMedsDTO>>(animalMeds);
+    }
+
     public async Task<MedicationDTO> AddMedication(MedicationDTO medicationDto)
     {
         var medication = mapper.Map<Medication>(medicationDto);

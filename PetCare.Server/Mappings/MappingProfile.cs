@@ -11,5 +11,8 @@ public class MappingProfile : Profile
         CreateMap<Medication, MedicationDTO>().ReverseMap();
         CreateMap<Animal, AnimalDTO>().ReverseMap();
         CreateMap<MedicationLog, MedicationLogDTO>().ReverseMap();
+        CreateMap<Medication, UserMedsDTO>()
+            .ForMember(dest => dest.AnimalName, 
+            opt => opt.MapFrom(src => src.Animal.Name));
     }
 }

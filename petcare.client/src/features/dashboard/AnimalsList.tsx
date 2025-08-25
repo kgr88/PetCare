@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { useAnimals } from './hooks/useAnimals';
 import dogSrc from '../../assets/dog.jpg';
 export default function AnimalsList() {
-  const { data, error, isLoading } = useAnimals();
+  const { data: animals, error, isLoading } = useAnimals();
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-      {data?.map((animal) => (
+      {animals?.map((animal) => (
         <Link
           key={animal.id}
           to={`/animals/${animal.id}`}

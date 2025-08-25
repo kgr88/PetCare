@@ -27,6 +27,16 @@ public class MedicationsController : ControllerBase
         return Ok(animalMeds);
     }
 
+    [HttpGet]
+    public async Task<ActionResult> GetAllMeds()
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
+        var animalMeds = await medicationService.GetAllMeds(userId);
+        return Ok(animalMeds);
+    }
+
     [HttpPost]
     public async Task<ActionResult> AddMedication([FromBody] MedicationDTO medicationDto)
     {

@@ -25,5 +25,11 @@ public class AnimalConfiguration : IEntityTypeConfiguration<Animal>
 
         builder.Property(a => a.OwnerId)
             .IsRequired();
+
+        builder.HasOne(a => a.Owner)
+            .WithMany(u => u.Animals)
+            .HasForeignKey(a => a.OwnerId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
