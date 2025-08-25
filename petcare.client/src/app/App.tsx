@@ -12,10 +12,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <BrowserRouter>
-          <main className="max-w-7xl mx-auto">
+          <main className="max-w-7xl mx-auto px-4 lg:px-2">
             <Navbar />
+            <AppRouter />
           </main>
-          <AppRouter />
         </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>

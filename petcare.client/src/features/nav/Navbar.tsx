@@ -8,7 +8,7 @@ import { ModeToggle } from '../theme/mode-toggle';
 import { Link } from 'react-router-dom';
 export default function Navbar() {
   return (
-    <div className=" p-2 flex justify-between">
+    <div className="py-2 flex justify-between">
       <div>
         <NavigationMenu className="min-w-full">
           <NavigationMenuList>
