@@ -21,4 +21,10 @@ export interface Medication {
   type: string;
   frequencyType: string;
   frequency: number;
+  lastTaken: string;
+}
+
+export interface MedicationLog {
+  medicationId: number;
+  timeTaken: string;
 }

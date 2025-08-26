@@ -13,4 +13,5 @@ public class UserMedsDTO
     public string Type { get; set; } = string.Empty;
     public string? FrequencyType { get; set; }
     public int? Frequency { get; set; }
+    public DateTime? LastTaken { get; set; }
 }

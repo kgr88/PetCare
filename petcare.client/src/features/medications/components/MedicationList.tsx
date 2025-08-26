@@ -6,9 +6,10 @@ import {
 } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useMedications } from './hooks/useMedications';
+import { useMedications } from '../hooks/useMedications';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import MedicationLog from './MedicationLog';
+import formatDate from '../utils/formatDate';
 
 export default function MedicationList() {
   const { data: medications, error, isLoading } = useMedications();
@@ -20,11 +21,11 @@ export default function MedicationList() {
       <Card className="px-4 py-2 gap-0">
         <div className="flex justify-between">
           <h1 className="text-lg font-bold">Current Medications</h1>
-          <Button variant="outline">Add Log</Button>
+          <MedicationLog medications={medications ?? []} />
         </div>
         <Accordion type="single" collapsible className="w-full min-h-64">
           {medications?.map((medication) => (
-            <AccordionItem value={medication.name} key={medication.id}>
+            <AccordionItem value={String(medication.id)} key={medication.id}>
               <AccordionTrigger>
                 <span>
                   {medication.animalName}: {medication.name}
@@ -38,6 +39,16 @@ export default function MedicationList() {
                   <Badge variant="default">{medication.startDate}</Badge>
                   {medication.endDate ? (
                     <Badge variant="destructive">{medication.startDate}</Badge>
+                  ) : (
+                    medication.endDate
+                  )}
+                </div>
+                <div>
+                  {medication.lastTaken ? (
+                    <>
+                      <span className="font-bold">Last taken: </span>
+                      <span>{formatDate(medication.lastTaken)}</span>
+                    </>
                   ) : (
                     ''
                   )}
