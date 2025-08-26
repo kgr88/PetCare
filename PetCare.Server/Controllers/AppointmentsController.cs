@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PetCare.Server.Models;
 using PetCare.Server.Services;
 using PetCare.Server.Services.Interfaces;
+using System.Security.Claims;
 
 namespace PetCare.Server.Controllers;
 [Authorize]
@@ -16,5 +18,14 @@ public class AppointmentsController : ControllerBase
         this.appointmentService = appointmentService;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments()
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
+        var appointments = await appointmentService.GetAppointments(userId);
+        return Ok(appointments);
+    }
 
 }

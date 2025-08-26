@@ -1,5 +1,9 @@
-﻿namespace PetCare.Server.Services.Interfaces;
+﻿using PetCare.Server.Models;
 
-public class IAppointmentService
+namespace PetCare.Server.Services.Interfaces;
+
+public interface IAppointmentService
 {
+    Task<IEnumerable<UserAppointmentsDTO>> GetAppointments(string userId);
+    
 }
