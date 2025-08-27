@@ -17,8 +17,8 @@ export default function Medications() {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <ScrollArea className="max-h-64 shadow-sm rounded-xl">
-      <Card className="px-4 py-2 gap-0 min-h-64">
+    <ScrollArea className="max-h-92 shadow-sm rounded-xl">
+      <Card className="px-4 py-2 gap-0 min-h-92">
         <div className="flex justify-between">
           <h1 className="text-lg font-bold">Current Medications</h1>
           <MedicationLog medications={medications ?? []} />

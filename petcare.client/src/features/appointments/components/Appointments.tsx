@@ -6,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAnimals } from '@/features/animals/hooks/useAnimals';
 import ScheduleAppointment from './ScheduleAppointment';
 
-export default function AppointmentList() {
+export default function Appointments() {
   const { data: appointments, error, isLoading } = useAppointments();
   const {
     data: animals,
@@ -17,8 +17,8 @@ export default function AppointmentList() {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <ScrollArea className="max-h-64 shadow-sm rounded-xl">
-      <Card className="px-4 py-2 text-sm min-h-64">
+    <ScrollArea className="max-h-92 shadow-sm rounded-xl">
+      <Card className="px-4 py-2 text-sm min-h-92">
         <div className="flex justify-between ">
           <h1 className="text-lg font-bold">Upcoming Appointments</h1>
           <ScheduleAppointment animals={animals ?? []} />

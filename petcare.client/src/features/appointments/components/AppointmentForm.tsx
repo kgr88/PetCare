@@ -36,7 +36,7 @@ const formSchema = z.object({
 });
 type FormValues = z.infer<typeof formSchema>;
 
-export default function MedicationLogForm({
+export default function AppointmentForm({
   onClose,
   closeAction,
   animals,
@@ -46,7 +46,7 @@ export default function MedicationLogForm({
   closeAction?: React.ReactNode;
   animals: Animal[];
 }) {
-  const createMedLog = useCreateAppointment();
+  const createAppointment = useCreateAppointment();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -69,7 +69,7 @@ export default function MedicationLogForm({
       location: values.location,
     };
 
-    createMedLog.mutate(payload, {
+    createAppointment.mutate(payload, {
       onSuccess: () => {
         setSubmitError(null);
         onClose?.();
@@ -177,7 +177,7 @@ export default function MedicationLogForm({
         />
         <div>
           <div className="flex items-center gap-2">
-            <Button type="submit" disabled={createMedLog.isPending}>
+            <Button type="submit" disabled={createAppointment.isPending}>
               Submit
             </Button>
             {closeAction}
