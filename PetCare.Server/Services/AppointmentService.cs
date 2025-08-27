@@ -38,7 +38,7 @@ public class AppointmentService : IAppointmentService
 
     public async Task<IEnumerable<AppointmentDTO>> GetAnimalAppointments(int animalId)
     {
-        var animalAppointments = await context.Medications
+        var animalAppointments = await context.Appointments
             .Where(m => m.AnimalId == animalId)
             .ToListAsync();
         return mapper.Map<IEnumerable<AppointmentDTO>>(animalAppointments);

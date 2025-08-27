@@ -6,11 +6,22 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import ScheduleAppointment from './ScheduleAppointment';
 import type { Animal } from '@/types';
 
-export default function Appointments({ animals }: { animals: Animal[] }) {
-  const { data: appointments, error, isLoading } = useAppointments();
+export default function Appointments({
+  animals,
+  animalId,
+  singleAnimal = false,
+}: {
+  animals: Animal[];
+  animalId?: number;
+  singleAnimal?: boolean;
+}) {
+  const {
+    data: appointments,
+    error,
+    isLoading,
+  } = useAppointments(singleAnimal, animalId);
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
-
   return (
     <ScrollArea className="max-h-92 shadow-sm rounded-xl">
       <Card className="px-4 py-2 text-sm min-h-92">

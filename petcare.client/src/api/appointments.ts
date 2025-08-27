@@ -12,6 +12,20 @@ export async function getAppointments(): Promise<Appointment[]> {
   return res.json();
 }
 
+export async function getAnimalAppointments(
+  animalId: number
+): Promise<Appointment[]> {
+  const res = await fetch(`/api/appointments/${animalId}`);
+  if (!res.ok) {
+    const error: Error & { status?: number } = new Error(
+      'Failed to fetch appointments'
+    );
+    error.status = res.status;
+    throw error;
+  }
+  return res.json();
+}
+
 export async function createAppointment(
   appointment: AppointmentForm
 ): Promise<AppointmentForm> {

@@ -4,7 +4,7 @@ import Medications from '@/features/medications/components/Medications';
 import { Separator } from '@/components/ui/separator';
 import { useAnimals } from '@/features/animals/hooks/useAnimals';
 export default function Dashboard() {
-  const { data: animals, error, isLoading } = useAnimals();
+  const { data: animals, error, isLoading } = useAnimals(false);
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
   return (

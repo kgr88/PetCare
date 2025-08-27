@@ -11,11 +11,21 @@ import { Badge } from '@/components/ui/badge';
 import MedicationLog from './MedicationLog';
 import formatDate from '@/utils/formatDate';
 
-export default function Medications() {
-  const { data: medications, error, isLoading } = useMedications();
+export default function Medications({
+  animalId,
+  singleAnimal = false,
+}: {
+  animalId?: number;
+  singleAnimal?: boolean;
+}) {
+  const {
+    data: medications,
+    error,
+    isLoading,
+  } = useMedications(singleAnimal, animalId);
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
-
+  console.log(medications);
   return (
     <ScrollArea className="max-h-92 shadow-sm rounded-xl">
       <Card className="px-4 py-2 gap-0 min-h-92">
@@ -28,7 +38,8 @@ export default function Medications() {
             <AccordionItem value={String(medication.id)} key={medication.id}>
               <AccordionTrigger>
                 <span>
-                  {medication.animalName}: {medication.name}
+                  {!singleAnimal ? `${medication.animalName}: ` : ''}
+                  {medication.name}
                   <Badge variant="outline" className="mx-2">
                     {medication.dosage}
                   </Badge>

@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAppointments } from '@/api/appointments';
+import { getAnimalAppointments, getAppointments } from '@/api/appointments';
 import type { Appointment } from '@/types';
 
-export function useAppointments() {
+export function useAppointments(singleAnimal: boolean, animalId?: number) {
   return useQuery<Appointment[], Error>({
-    queryKey: ['appointments'],
-    queryFn: getAppointments,
+    queryKey: ['appointments', { animalId, singleAnimal }],
+    queryFn: singleAnimal
+      ? () => getAnimalAppointments(animalId ?? 0)
+      : () => getAppointments(),
     staleTime: 1000 * 60,
     retry: 1,
   });

@@ -11,6 +11,18 @@ export async function getMedications(): Promise<Medication[]> {
   return res.json();
 }
 
+export async function getAnimalMeds(animalId: number): Promise<Medication[]> {
+  const res = await fetch(`/api/medications/${animalId}`);
+  if (!res.ok) {
+    const error: Error & { status?: number } = new Error(
+      'Failed to fetch medications'
+    );
+    error.status = res.status;
+    throw error;
+  }
+  return res.json();
+}
+
 export async function createMedLog(log: MedicationLog): Promise<MedicationLog> {
   const res = await fetch('/api/medicationlogs', {
     method: 'POST',

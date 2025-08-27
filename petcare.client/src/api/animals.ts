@@ -11,6 +11,18 @@ export async function getAnimals(): Promise<Animal[]> {
   return res.json();
 }
 
+export async function getAnimalDetails(animalId: number): Promise<Animal[]> {
+  const res = await fetch(`/api/animals/${animalId}`);
+  if (!res.ok) {
+    const error = new Error('Failed to fetch animal') as Error & {
+      status?: number;
+    };
+    error.status = res.status;
+    throw error;
+  }
+  return res.json();
+}
+
 export async function createAnimal(animal: AnimalForm): Promise<AnimalForm> {
   const res = await fetch('/api/animals', {
     method: 'POST',

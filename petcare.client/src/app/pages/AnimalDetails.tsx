@@ -1,34 +1,47 @@
 import { useParams } from 'react-router-dom';
 import AuthorizeView from '../../features/auth/AuthorizeView';
-import { useQuery } from '@tanstack/react-query';
+import Header from '@/features/animalDetails/components/Header';
+import Medications from '@/features/medications/components/Medications';
+import Appointments from '@/features/appointments/components/Appointments';
+import { Separator } from '@radix-ui/react-separator';
+import { useAnimals } from '@/features/animals/hooks/useAnimals';
 
 export default function AnimalDetails() {
   const { id } = useParams();
-  const { data, error, isError, isLoading } = useQuery({
-    queryKey: ['animal', id],
-    queryFn: async () => {
-      const res = await fetch(`/api/animals/${id}`);
-      if (res.status === 404) {
-        throw new Error('not found');
-      }
-      if (!res.ok) {
-        throw new Error('error');
-      }
-      return res.json();
-    },
-    retry: false,
-  });
+  const animalId = Number(id);
+  const { data: animal, error, isLoading } = useAnimals(true, animalId);
+  const activeAnimal = Array.isArray(animal) ? animal[0] : animal;
 
   return (
     <AuthorizeView>
-      {isLoading && <div>Loading...</div>}
-      {isError && error instanceof Error && error.message === 'not found' && (
-        <div>Not found</div>
+      {isLoading && <div className="p-6 text-center">Loading...</div>}
+      {error && (
+        <div className="p-6 text-center text-red-600">
+          Error: {error?.message}
+        </div>
       )}
-      {isError && error instanceof Error && error.message !== 'not found' && (
-        <div>Error: {error.message}</div>
+      {animal && (
+        <>
+          <div className="w-full mx-auto">
+            <div className="flex items-start">
+              <div className=" flex-shrink-0 pr-6">
+                <Header animal={activeAnimal} />
+              </div>
+              <Separator orientation="vertical" />
+              <div className="flex-1 rounded-lg">
+                <div className="grid grid-cols-2 gap-6">
+                  <Medications singleAnimal={true} animalId={animalId} />
+                  <Appointments
+                    singleAnimal={true}
+                    animalId={animalId}
+                    animals={[animal[0]]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       )}
-      {data && <div>{JSON.stringify(data)}</div>}
     </AuthorizeView>
   );
 }

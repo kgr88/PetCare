@@ -16,12 +16,14 @@ public class MedicationService : IMedicationService
         this.mapper = mapper;
     }
 
-    public async Task<IEnumerable<MedicationDTO>> GetAnimalMeds(int animalId)
+    public async Task<IEnumerable<UserMedsDTO>> GetAnimalMeds(int animalId)
     {
         var animalMeds = await context.Medications
+            .Include(m => m.Animal)
+            .Include(m => m.MedicationLogs)
             .Where(m => m.AnimalId == animalId)
             .ToListAsync();
-        return mapper.Map<IEnumerable<MedicationDTO>>(animalMeds);
+        return mapper.Map<IEnumerable<UserMedsDTO>>(animalMeds);
     }
 
     public async Task<IEnumerable<UserMedsDTO>> GetAllMeds(string ownerId)

@@ -2,6 +2,7 @@
 
 public class MedicationDTO
 {
+    public int? Id { get; set; }
     public int AnimalId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Dosage { get; set; }
