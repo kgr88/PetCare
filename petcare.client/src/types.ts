@@ -7,6 +7,8 @@ export interface Animal {
   microchipId?: string;
 }
 
+export type AnimalForm = Omit<Animal, 'id'>;
+
 export type FormData = Omit<Animal, 'id'>;
 
 export interface Medication {

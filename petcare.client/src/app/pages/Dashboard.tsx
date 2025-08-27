@@ -1,5 +1,5 @@
 import Appointments from '@/features/appointments/components/Appointments';
-import Animals from '@/features/animals/Animals';
+import Animals from '@/features/animals/components/Animals';
 import Medications from '@/features/medications/components/Medications';
 import { Separator } from '@/components/ui/separator';
 import { useAnimals } from '@/features/animals/hooks/useAnimals';
