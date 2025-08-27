@@ -1,12 +1,12 @@
-import AnimalsList from '@/features/dashboard/AnimalsList';
-import Appointments from '@/features/dashboard/Appointments';
-import MedicationList from '@/features/medications/components/MedicationList';
+import AppointmentsList from '@/features/appointments/components/Appointments';
+import AnimalsList from '@/features/animals/AnimalsList';
+import Medications from '@/features/medications/components/Medications';
 export default function Dashboard() {
   return (
     <>
       <div className="grid md:grid-cols-2 gap-4 mb-4">
-        <Appointments />
-        <MedicationList />
+        <AppointmentsList />
+        <Medications />
       </div>
       <AnimalsList />
     </>

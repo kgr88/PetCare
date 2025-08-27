@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetCare.Server.Models;
+using PetCare.Server.Models.DTOs;
 using PetCare.Server.Services;
 using PetCare.Server.Services.Interfaces;
 using System.Security.Claims;
@@ -26,6 +27,26 @@ public class AppointmentsController : ControllerBase
 
         var appointments = await appointmentService.GetAppointments(userId);
         return Ok(appointments);
+    }
+
+    [HttpGet]
+    [Route("{animalId:int}")]
+    public async Task<ActionResult> GetAnimalAppointments(int animalId)
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
+        var animalMeds = await appointmentService.GetAnimalAppointments(animalId);
+        return Ok(animalMeds);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddAppointment([FromBody] AppointmentDTO appointmentDto)
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+        var appointment = await appointmentService.AddAppointment(appointmentDto);
+        return CreatedAtAction(nameof(GetAnimalAppointments), new { animalId = appointment.AnimalId }, appointment);
     }
 
 }

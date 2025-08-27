@@ -9,21 +9,21 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useMedications } from '../hooks/useMedications';
 import { Badge } from '@/components/ui/badge';
 import MedicationLog from './MedicationLog';
-import formatDate from '../utils/formatDate';
+import formatDate from '@/utils/formatDate';
 
-export default function MedicationList() {
+export default function Medications() {
   const { data: medications, error, isLoading } = useMedications();
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <ScrollArea className="max-h-64 shadow-sm rounded-xl">
-      <Card className="px-4 py-2 gap-0">
+      <Card className="px-4 py-2 gap-0 min-h-64">
         <div className="flex justify-between">
           <h1 className="text-lg font-bold">Current Medications</h1>
           <MedicationLog medications={medications ?? []} />
         </div>
-        <Accordion type="single" collapsible className="w-full min-h-64">
+        <Accordion type="single" collapsible className="w-full">
           {medications?.map((medication) => (
             <AccordionItem value={String(medication.id)} key={medication.id}>
               <AccordionTrigger>
@@ -47,7 +47,14 @@ export default function MedicationList() {
                   {medication.lastTaken ? (
                     <>
                       <span className="font-bold">Last taken: </span>
-                      <span>{formatDate(medication.lastTaken)}</span>
+                      <span>
+                        {(() => {
+                          const formatted = formatDate(
+                            new Date(medication.lastTaken)
+                          );
+                          return `${formatted.monthDay} ${formatted.year}, ${formatted.time}`;
+                        })()}
+                      </span>
                     </>
                   ) : (
                     ''

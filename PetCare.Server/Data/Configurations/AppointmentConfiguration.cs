@@ -12,8 +12,5 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.Property(a => a.Description)
-            .HasMaxLength(500);
-
     }
 }

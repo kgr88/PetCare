@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,46 +18,55 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import DateTimePicker from '@/components/DateTimePicker';
-import type { Medication, MedicationLog } from '@/types';
+import type { Animal, AppointmentForm } from '@/types';
 import formatFormDate from '../../../utils/formatFormDate';
 import getCurrentTime from '../../../utils/getCurrentTime';
-import { useCreateMedLog } from '../hooks/useCreateMedLog';
+import { useCreateAppointment } from '../hooks/useCreateAppointment';
 import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
-  medicationId: z.string().min(1, { message: 'Please select a medication.' }),
+  animalId: z.string().min(1, { message: 'Please select an animal.' }),
   date: z.date(),
   time: z.string().regex(/^\d{2}:\d{2}$/, { message: 'Please select a time.' }),
+  type: z.enum(['Veterinary', 'Grooming', 'Training', 'Other'], {
+    message: 'Please select an appointment type.',
+  }),
+  location: z.string().min(1, { message: 'Please enter a location.' }),
 });
 type FormValues = z.infer<typeof formSchema>;
 
 export default function MedicationLogForm({
-  medications,
   onClose,
   closeAction,
+  animals,
 }: {
-  medications: Medication[];
   onClose?: () => void;
   /** rendered next to the Submit button (e.g. DialogClose asChild) */
   closeAction?: React.ReactNode;
+  animals: Animal[];
 }) {
-  const createMedLog = useCreateMedLog();
+  const createMedLog = useCreateAppointment();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      medicationId: '',
+      animalId: '',
       date: new Date(),
       time: getCurrentTime(),
+      type: 'Other',
+      location: '',
     },
   });
 
   function onSubmit(values: FormValues) {
     setSubmitError(null);
     const timeTaken = formatFormDate(values.date, values.time);
-    const payload: MedicationLog = {
-      medicationId: Number(values.medicationId),
-      timeTaken,
+    const payload: AppointmentForm = {
+      animalId: Number(values.animalId),
+      date: timeTaken,
+      type: values.type,
+      location: values.location,
     };
 
     createMedLog.mutate(payload, {
@@ -74,35 +82,82 @@ export default function MedicationLogForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
           control={form.control}
-          name="medicationId"
+          name="animalId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Medication</FormLabel>
+              <FormLabel>Animal</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a medication" />
+                    <SelectValue placeholder="Select an animal" />
                   </SelectTrigger>
                   <SelectContent>
-                    {medications.map((m) => (
+                    {animals.map((m) => (
                       <SelectItem key={m.id} value={String(m.id)}>
-                        <span className="font-bold">{m.animalName}</span>
                         {m.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormDescription>
-                Select which medication this log is for.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type</FormLabel>
+              <FormControl>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select an appointment type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem key={1} value={String('Veterinary')}>
+                      Veterinary
+                    </SelectItem>
+                    <SelectItem key={2} value={String('Grooming')}>
+                      Grooming
+                    </SelectItem>
+                    <SelectItem key={3} value={String('Training')}>
+                      Training
+                    </SelectItem>
+                    <SelectItem key={4} value={String('Other')}>
+                      Other
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full rounded-md border px-3 py-2"
+                  placeholder="Enter a location"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="date"
