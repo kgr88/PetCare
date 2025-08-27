@@ -3,16 +3,11 @@ import { useAppointments } from '../hooks/useAppointments';
 import { Badge } from '@/components/ui/badge';
 import formatDate from '@/utils/formatDate';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAnimals } from '@/features/animals/hooks/useAnimals';
 import ScheduleAppointment from './ScheduleAppointment';
+import type { Animal } from '@/types';
 
-export default function Appointments() {
+export default function Appointments({ animals }: { animals: Animal[] }) {
   const { data: appointments, error, isLoading } = useAppointments();
-  const {
-    data: animals,
-    error: animalsError,
-    isLoading: animalsLoading,
-  } = useAnimals();
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
 

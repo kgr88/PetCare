@@ -1,13 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-
-import { useAnimals } from './hooks/useAnimals';
 import dogSrc from '../../assets/dog.jpg';
-export default function AnimalsList() {
-  const { data: animals, error, isLoading } = useAnimals();
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
-  if (isLoading) return <p>Loading...</p>;
-
+import type { Animal } from '@/types';
+export default function AnimalsList({ animals }: { animals: Animal[] }) {
   return (
     <div className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       {animals?.map((animal) => (
