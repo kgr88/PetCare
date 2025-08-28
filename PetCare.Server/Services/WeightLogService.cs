@@ -30,7 +30,7 @@ public class WeightLogService : IWeightLogService
     {
         var logs = await context.WeightLogs
             .Where(w => w.AnimalId == animalId)
-            .OrderByDescending(w => w.Date)
+            .OrderBy(w => w.Date)
             .ToListAsync();
         return mapper.Map<IEnumerable<WeightLogDTO>>(logs);
     }

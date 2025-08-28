@@ -23,6 +23,7 @@ public class AppointmentService : IAppointmentService
         var appointments = await context.Appointments
             .Include(m => m.Animal)
             .Where(a => a.Animal.OwnerId == userId)
+            .OrderBy(a => a.Date)
             .ToListAsync();
 
         return mapper.Map<IEnumerable<UserAppointmentsDTO>>(appointments);
@@ -40,6 +41,7 @@ public class AppointmentService : IAppointmentService
     {
         var animalAppointments = await context.Appointments
             .Where(m => m.AnimalId == animalId)
+            .OrderBy(a => a.Date)
             .ToListAsync();
         return mapper.Map<IEnumerable<AppointmentDTO>>(animalAppointments);
     }

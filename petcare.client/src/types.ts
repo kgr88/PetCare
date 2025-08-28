@@ -41,3 +41,12 @@ export interface Appointment {
 }
 
 export type AppointmentForm = Omit<Appointment, 'id' | 'animalName'>;
+
+export interface WeightLog {
+  id: number;
+  animalId: number;
+  weight: number;
+  date: string;
+}
+
+export type WeightLogForm = Omit<WeightLog, 'id'>;

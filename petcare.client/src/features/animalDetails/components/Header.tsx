@@ -4,7 +4,7 @@ import dogSrc from '../../../assets/dog.jpg';
 export default function Header({ animal }: { animal?: Animal }) {
   if (!animal) return null;
   return (
-    <div className="flex flex-col items-start">
+    <div className="flex flex-row md:flex-col items-start">
       <img
         src={dogSrc}
         alt="animal"
