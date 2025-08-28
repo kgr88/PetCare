@@ -24,7 +24,6 @@ export default function AnimalDetails() {
       {animal && (
         <>
           <div className="w-full mx-auto">
-            {/* Responsive: header on top for mobile, sidebar for desktop */}
             <div className="flex flex-col md:flex-row items-start">
               <div className="w-full md:w-auto flex-shrink-0 md:pr-6">
                 <Header animal={activeAnimal} />
