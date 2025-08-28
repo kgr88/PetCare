@@ -22,7 +22,9 @@ export default function MedicationLog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Log</Button>
+        <Button disabled={medications.length == 0} variant="outline">
+          Add Log
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-fit" aria-describedby={undefined}>
         <DialogHeader>

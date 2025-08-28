@@ -34,7 +34,7 @@ export default function AnimalDetails() {
                   <Appointments
                     singleAnimal={true}
                     animalId={animalId}
-                    animals={[animal[0]]}
+                    animals={activeAnimal ? [activeAnimal] : []}
                   />
                 </div>
               </div>

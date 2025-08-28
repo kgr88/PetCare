@@ -25,7 +25,6 @@ export default function Medications({
   } = useMedications(singleAnimal, animalId);
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
-  console.log(medications);
   return (
     <ScrollArea className="max-h-92 shadow-sm rounded-xl">
       <Card className="px-4 py-2 gap-0 min-h-92">
