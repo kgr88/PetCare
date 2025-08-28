@@ -1,144 +1,214 @@
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { useState } from 'react';
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
+
+const formSchema = z
+  .object({
+    email: z.string().email({ message: 'Please enter a valid email.' }),
+    password: z
+      .string()
+      .min(6, { message: 'Password must be at least 6 characters.' })
+      .regex(passwordRegex, {
+        message:
+          'Password must contain uppercase, lowercase, number, and special character.',
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match.',
+    path: ['confirmPassword'],
+  });
+
+type FormValues = z.infer<typeof formSchema>;
+
+async function registerRequest(data: FormValues) {
+  const response = await fetch('/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: data.email,
+      password: data.password,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Registration failed. Please try again.');
+  }
+
+  return {};
+}
 
 export default function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
 
-  const handleLoginClick = () => {
-    navigate('/login-page');
-  };
+  const mutation = useMutation({
+    mutationFn: registerRequest,
+    onSuccess: () => {
+      setSubmitError(null);
+      setSuccess('Registration successful! You can now log in.');
+    },
+    onError: (err: Error) => {
+      setSuccess(null);
+      setSubmitError(err.message || 'An unexpected error occurred.');
+    },
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === 'email') setEmail(value);
-    if (name === 'password') setPassword(value);
-    if (name === 'confirmPassword') setConfirmPassword(value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    if (!email || !password || !confirmPassword) {
-      setError('Please fill in all fields.');
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
-
-    try {
-      const response = await fetch('/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
-
-      if (response.ok) {
-        setSuccess('Registration successful! You can now log in.');
-        // Optionally redirect to login page
-        setTimeout(() => navigate('/login-page'), 2000);
-      } else {
-        // Parse error response
-        const errorData = await response.text();
-        try {
-          const parsedError = JSON.parse(errorData);
-          const errorMessages = Object.values(parsedError.errors || {}).flat();
-          setError(
-            errorMessages.length > 0
-              ? errorMessages.join(', ')
-              : 'Registration failed.'
-          );
-        } catch {
-          setError(`Registration failed. ${errorData || 'Please try again.'}`);
-        }
-      }
-    } catch (error) {
-      console.error('Registration error:', error);
-      setError('Network error. Please check your connection and try again.');
-    }
-  };
+  function onSubmit(values: FormValues) {
+    setSubmitError(null);
+    setSuccess(null);
+    mutation.mutate(values);
+  }
 
   return (
-    <div className="containerbox">
-      <h3>Register</h3>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
+    <div className="flex justify-center items-center min-h-[80vh]">
+      <Card className="w-full shadow-lg max-w-92">
+        <CardHeader className="pb-0">
+          <div className="flex flex-col items-center text-center">
+            <h1 className="text-2xl font-bold">Register</h1>
+            <p className="text-muted-foreground text-balance">
+              Create your PetCare account
+            </p>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        autoComplete="email"
+                        disabled={mutation.isPending}
+                        {...field}
+                        className="w-full"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-500" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        autoComplete="new-password"
+                        disabled={mutation.isPending}
+                        {...field}
+                        className="w-full"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-500" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">
+                      Confirm Password
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Confirm your password"
+                        autoComplete="new-password"
+                        disabled={mutation.isPending}
+                        {...field}
+                        className="w-full"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-500" />
+                  </FormItem>
+                )}
+              />
+              <div>
+                {submitError && (
+                  <p className="text-sm text-red-500 text-center" role="alert">
+                    {submitError}
+                  </p>
+                )}
+                {success && (
+                  <p
+                    className="text-sm text-green-600 text-center"
+                    role="status"
+                  >
+                    {success}
+                  </p>
+                )}
+              </div>
+              <Button
+                type="submit"
+                disabled={mutation.isPending}
+                className="w-full"
+              >
+                {mutation.isPending ? 'Registering...' : 'Register'}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t mx-6">
+          <span className="bg-card text-muted-foreground relative z-10 px-4">
+            or
+          </span>
         </div>
-        <div>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-        </div>
-        <div>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-        </div>
-        <div>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <button type="submit">Register</button>
-        </div>
-        <div>
-          <button type="button" onClick={handleLoginClick}>
+        <CardFooter className="flex justify-between">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => navigate('/login-page')}
+            disabled={mutation.isPending}
+            className="w-full"
+          >
             Go to Login
-          </button>
-        </div>
-      </form>
-
-      {error && (
-        <p className="error" style={{ color: 'red' }}>
-          {error}
-        </p>
-      )}
-      {success && (
-        <p className="success" style={{ color: 'green' }}>
-          {success}
-        </p>
-      )}
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

@@ -151,7 +151,7 @@ export default function Login() {
                   </FormItem>
                 )}
               />
-              <div className="">
+              <div>
                 {submitError && (
                   <p className="text-sm text-red-500 text-center" role="alert">
                     {submitError}
@@ -169,7 +169,7 @@ export default function Login() {
           </Form>
         </CardContent>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t mx-6">
-          <span className="bg-card dark:bg-black/20 text-muted-foreground relative z-10 px-4">
+          <span className="bg-card text-muted-foreground relative z-10 px-4">
             or
           </span>
         </div>
