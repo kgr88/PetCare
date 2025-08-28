@@ -22,5 +22,7 @@ public class MappingProfile : Profile
                     .Select(log => (DateTime?)log.TimeTaken)
                     .FirstOrDefault()
     ));
+        CreateMap<WeightLog, WeightLogDTO>().ReverseMap();
+        CreateMap<CreateWeightLogDTO, WeightLog>();
     }
 }

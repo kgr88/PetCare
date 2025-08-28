@@ -30,6 +30,7 @@ public class Program
         builder.Services.AddScoped<IAppointmentService, AppointmentService>();
         builder.Services.AddScoped<IMedicationService, MedicationService>();
         builder.Services.AddScoped<IMedicationLogService, MedicationLogService>();
+        builder.Services.AddScoped<IWeightLogService, WeightLogService>();
         builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
         var app = builder.Build();
 
