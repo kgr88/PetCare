@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -10,27 +11,69 @@ import { useMedications } from '../hooks/useMedications';
 import { Badge } from '@/components/ui/badge';
 import MedicationLog from './MedicationLog';
 import formatDate from '@/utils/formatDate';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
+import AddMedicationForm from './AddMedicationForm';
+import type { Animal } from '@/types';
 
 export default function Medications({
   animalId,
   singleAnimal = false,
+  animals = [],
 }: {
   animalId?: number;
   singleAnimal?: boolean;
+  animals?: Animal[];
 }) {
   const {
     data: medications,
     error,
     isLoading,
   } = useMedications(singleAnimal, animalId);
+
+  const [addMedOpen, setAddMedOpen] = useState(false);
+
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
+  console.log(medications);
   return (
-    <ScrollArea className="max-h-92 shadow-sm rounded-xl">
+    <ScrollArea className="max-h-92 shadow-sm rounded-xl overflow-y-auto h-full">
       <Card className="px-4 py-2 gap-0 min-h-92">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h1 className="text-lg font-bold">Current Medications</h1>
-          <MedicationLog medications={medications ?? []} />
+          <div className="flex gap-2">
+            <MedicationLog medications={medications ?? []} />
+            <Dialog open={addMedOpen} onOpenChange={setAddMedOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline">Add Medication</Button>
+              </DialogTrigger>
+              <DialogContent className="w-fit" aria-describedby={undefined}>
+                <DialogHeader>
+                  <DialogTitle>Add Medication</DialogTitle>
+                </DialogHeader>
+                <AddMedicationForm
+                  animals={animals}
+                  onClose={() => setAddMedOpen(false)}
+                  closeAction={
+                    <DialogClose asChild>
+                      <Button type="button" variant="secondary">
+                        Close
+                      </Button>
+                    </DialogClose>
+                  }
+                />
+                <DialogFooter className="sm:justify-start mt-2"></DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
         <Accordion type="single" collapsible className="w-full">
           {medications?.map((medication) => (
@@ -48,7 +91,7 @@ export default function Medications({
                 <div className="flex gap-1">
                   <Badge variant="default">{medication.startDate}</Badge>
                   {medication.endDate ? (
-                    <Badge variant="destructive">{medication.startDate}</Badge>
+                    <Badge variant="destructive">{medication.endDate}</Badge>
                   ) : (
                     medication.endDate
                   )}

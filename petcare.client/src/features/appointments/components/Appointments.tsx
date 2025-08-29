@@ -23,7 +23,7 @@ export default function Appointments({
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading) return <p>Loading...</p>;
   return (
-    <ScrollArea className="max-h-92 shadow-sm rounded-xl">
+    <ScrollArea className="max-h-92 shadow-sm rounded-xl overflow-y-auto h-full">
       <Card className="px-4 py-2 text-sm min-h-92">
         <div className="flex justify-between ">
           <h1 className="text-lg font-bold">Upcoming Appointments</h1>

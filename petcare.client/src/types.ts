@@ -26,6 +26,18 @@ export interface Medication {
   lastTaken: string;
 }
 
+export interface MedicationForm {
+  animalId: number;
+  name: string;
+  dosage: string;
+  instructions?: string;
+  startDate: string;
+  endDate: string;
+  type: 'recurring' | 'as needed';
+  frequencyType: 'days' | 'hours';
+  frequency: number;
+}
+
 export interface MedicationLog {
   medicationId: number;
   timeTaken: string;

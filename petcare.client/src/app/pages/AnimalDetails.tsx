@@ -28,7 +28,7 @@ export default function AnimalDetails() {
               <div className="w-full md:w-auto flex-shrink-0 md:pr-6">
                 <Header animal={activeAnimal} />
               </div>
-              <Separator orientation="vertical" className="hidden md:block" />
+
               <div className="flex-1 rounded-lg w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>

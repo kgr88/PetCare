@@ -11,7 +11,7 @@ export default function Dashboard() {
     <>
       <div className="grid md:grid-cols-2 gap-4 mb-4">
         <Appointments animals={animals ?? []} />
-        <Medications />
+        <Medications animals={animals ?? []} />
       </div>
       <Separator className="my-2" />
       <Animals animals={animals ?? []} />
