@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useState } from 'react';
+import { useAuthRedirect } from '@/features/auth/useAuthCheck';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
 
@@ -90,6 +91,9 @@ export default function Register() {
     setSuccess(null);
     mutation.mutate(values);
   }
+
+  const { loading } = useAuthRedirect('/dashboard');
+  if (loading) return <p>Checking authentication...</p>;
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">

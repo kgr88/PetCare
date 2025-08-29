@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import AuthorizeView from '../../features/auth/AuthorizeView';
 import Header from '@/features/animalDetails/components/Header';
 import Medications from '@/features/medications/components/Medications';
 import Appointments from '@/features/appointments/components/Appointments';
@@ -13,7 +12,7 @@ export default function AnimalDetails() {
   const activeAnimal = Array.isArray(animal) ? animal[0] : animal;
   if (!animalId || !activeAnimal) return 'An unexpected error has occured';
   return (
-    <AuthorizeView>
+    <>
       {isLoading && <div className="p-6 text-center">Loading...</div>}
       {error && (
         <div className="p-6 text-center text-red-600">
@@ -49,6 +48,6 @@ export default function AnimalDetails() {
           </div>
         </>
       )}
-    </AuthorizeView>
+    </>
   );
 }

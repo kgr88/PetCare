@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useState } from 'react';
+import { useAuthRedirect } from '@/features/auth/useAuthCheck';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
@@ -53,6 +54,7 @@ async function loginRequest(data: FormValues) {
 export default function Login() {
   const navigate = useNavigate();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { loading } = useAuthRedirect('/dashboard');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -78,6 +80,8 @@ export default function Login() {
     setSubmitError(null);
     mutation.mutate(values);
   }
+
+  if (loading) return <p>Checking authentication...</p>;
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">
