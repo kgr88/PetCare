@@ -1,10 +1,12 @@
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from '@/components/ui/chart';
+  Area,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from 'recharts';
+import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
 import type { WeightLog } from '@/types';
 
 const chartConfig = {
@@ -23,13 +25,27 @@ export default function WeightChart({
     date: item.date,
     weight: item.weight,
   }));
+
+  function CustomTooltip({ active, payload, label }: any) {
+    if (!active || !payload || !payload.length) return null;
+    const point = payload[0];
+    const value = point?.value ?? '';
+    return (
+      <div className="bg-white/80 dark:bg-neutral-900/80 border rounded p-2 text-sm shadow">
+        <div className="font-medium text-xs text-muted-foreground">{label}</div>
+        <div className="mt-1 font-semibold">weight: {value} kg</div>
+      </div>
+    );
+  }
+
   return (
     <ChartContainer className="h-[80%]" config={chartConfig}>
       <AreaChart
         data={chartData}
         margin={{
-          left: 12,
-          right: 12,
+          top: 12,
+          left: -12,
+          right: 36,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -40,7 +56,13 @@ export default function WeightChart({
           tickMargin={8}
           tickFormatter={(value) => value.slice(2, 10)}
         />
-        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <YAxis
+          domain={[
+            (dataMin: number) => dataMin - 0.5,
+            (dataMax: number) => dataMax + 0.5,
+          ]}
+        />
+        <Tooltip content={CustomTooltip} cursor={false} />
         <defs>
           <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#7297d4" stopOpacity={0.8} />

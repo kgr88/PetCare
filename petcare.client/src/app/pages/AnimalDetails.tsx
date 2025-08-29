@@ -3,7 +3,6 @@ import AuthorizeView from '../../features/auth/AuthorizeView';
 import Header from '@/features/animalDetails/components/Header';
 import Medications from '@/features/medications/components/Medications';
 import Appointments from '@/features/appointments/components/Appointments';
-import { Separator } from '@radix-ui/react-separator';
 import { useAnimals } from '@/features/animals/hooks/useAnimals';
 import WeightHistory from '@/features/weightLogs/components/WeightHistory';
 

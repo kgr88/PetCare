@@ -12,18 +12,18 @@ export async function getWeightLogs(animalId: number): Promise<WeightLog[]> {
   return res.json();
 }
 
-// export async function createAnimal(animal: AnimalForm): Promise<AnimalForm> {
-//   const res = await fetch('/api/animals', {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify(animal),
-//   });
-//   if (!res.ok) {
-//     const error: Error & { status?: number } = new Error(
-//       'Failed to add animal'
-//     );
-//     error.status = res.status;
-//     throw error;
-//   }
-//   return res.json();
-// }
+export async function createWeightLog(log: WeightLog): Promise<WeightLog> {
+  const res = await fetch('/api/weightlogs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(log),
+  });
+  if (!res.ok) {
+    const error: Error & { status?: number } = new Error(
+      'Failed to add weight log'
+    );
+    error.status = res.status;
+    throw error;
+  }
+  return res.json();
+}

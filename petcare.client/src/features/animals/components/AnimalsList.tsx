@@ -4,7 +4,7 @@ import dogSrc from '../../../assets/dog.jpg';
 import type { Animal } from '@/types';
 export default function AnimalsList({ animals }: { animals: Animal[] }) {
   return (
-    <div className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
       {animals?.map((animal) => (
         <Link
           key={animal.id}
