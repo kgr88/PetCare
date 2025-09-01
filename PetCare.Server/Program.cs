@@ -32,6 +32,13 @@ public class Program
         builder.Services.AddScoped<IMedicationLogService, MedicationLogService>();
         builder.Services.AddScoped<IWeightLogService, WeightLogService>();
         builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
+        builder.Services.AddSingleton(sp =>
+        {
+            var conn = builder.Configuration.GetConnectionString("AzureStorage");
+            return new Azure.Storage.Blobs.BlobServiceClient(conn);
+        });
+        builder.Services.AddScoped<IImagesService, ImagesService>();
+
         var app = builder.Build();
 
         app.UseDefaultFiles();

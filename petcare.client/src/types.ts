@@ -5,9 +5,10 @@ export interface Animal {
   breed?: string;
   dateOfBirth?: string;
   microchipId?: string;
+  imageUrl?: string;
 }
 
-export type AnimalForm = Omit<Animal, 'id'>;
+export type AnimalForm = Omit<Animal, 'id' | 'imageUrl'>;
 
 export type FormData = Omit<Animal, 'id'>;
 

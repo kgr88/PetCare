@@ -8,4 +8,5 @@ public class AnimalDTO
     public string? Breed { get; set; }
     public DateOnly? DateOfBirth { get; set; }
     public string? MicrochipId { get; set; }
+    public string? ImageUrl { get; set; } = string.Empty;
 }

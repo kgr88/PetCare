@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+PetCare.Server/appsettings.Development.json
+PetCare.Server/appsettings.Production.json
+PetCare.Server/appsettings.Staging.json

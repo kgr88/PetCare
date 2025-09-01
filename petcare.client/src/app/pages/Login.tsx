@@ -69,7 +69,7 @@ export default function Login() {
     mutationFn: loginRequest,
     onSuccess: () => {
       setSubmitError(null);
-      navigate('/');
+      navigate('/dashboard');
     },
     onError: (err: Error) => {
       setSubmitError(err.message || 'An unexpected error occurred.');
