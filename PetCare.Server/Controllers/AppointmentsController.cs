@@ -49,4 +49,18 @@ public class AppointmentsController : ControllerBase
         return CreatedAtAction(nameof(GetAnimalAppointments), new { animalId = appointment.AnimalId }, appointment);
     }
 
+    [HttpDelete]
+    [Route("{appointmentId:int}")]
+    public async Task<ActionResult> DeleteAppointment(int appointmentId)
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
+        var deleted = await appointmentService.DeleteAppointment(appointmentId, userId);
+        if (!deleted)
+            return NotFound("Appointment not found or you don't have permission to delete it");
+
+        return NoContent();
+    }
+
 }

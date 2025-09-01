@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/dialog';
 import AddMedicationForm from './AddMedicationForm';
 import type { Animal } from '@/types';
+import DeleteButton from '@/components/ui/DeleteButton';
 
 export default function Medications({
   animalId,
@@ -49,7 +50,7 @@ export default function Medications({
       <Card className="px-4 py-2 gap-0 min-h-92">
         <div className="flex justify-between items-center">
           <h1 className="text-lg font-bold">Current Medications</h1>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-col lg:flex-row">
             <MedicationLog medications={medications ?? []} />
             <Dialog open={addMedOpen} onOpenChange={setAddMedOpen}>
               <DialogTrigger asChild>
@@ -88,13 +89,16 @@ export default function Medications({
                 </span>
               </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-2 text-balance">
-                <div className="flex gap-1">
-                  <Badge variant="default">{medication.startDate}</Badge>
-                  {medication.endDate ? (
-                    <Badge variant="destructive">{medication.endDate}</Badge>
-                  ) : (
-                    medication.endDate
-                  )}
+                <div className="flex justify-between">
+                  <div className="flex gap-1">
+                    <Badge variant="default">{medication.startDate}</Badge>
+                    {medication.endDate ? (
+                      <Badge variant="destructive">{medication.endDate}</Badge>
+                    ) : (
+                      medication.endDate
+                    )}
+                  </div>
+                  <DeleteButton id={medication.id} entityType="medications" />
                 </div>
                 <div>
                   {medication.lastTaken ? (

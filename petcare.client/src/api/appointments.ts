@@ -43,3 +43,22 @@ export async function createAppointment(
   }
   return res.json();
 }
+
+export async function deleteAppointment(appointmendId: number) {
+  const res = await fetch(`/api/appointments/${appointmendId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    const error: Error & { status?: number } = new Error(
+      'Failed to delete appointment'
+    );
+    error.status = res.status;
+    throw error;
+  }
+
+  return;
+}

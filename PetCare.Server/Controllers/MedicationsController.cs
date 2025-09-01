@@ -45,4 +45,18 @@ public class MedicationsController : ControllerBase
         var medication = await medicationService.AddMedication(medicationDto);
         return CreatedAtAction(nameof(GetAnimalMeds), new { animalId = medication.AnimalId }, medication);
     }
+
+    [HttpDelete]
+    [Route("{medicationId:int}")]
+    public async Task<ActionResult> DeleteMedication(int medicationId)
+    {
+        if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
+            return Unauthorized();
+
+        var deleted = await medicationService.DeleteMedication(medicationId, userId);
+        if (!deleted)
+            return NotFound("Medication not found or you don't have permission to delete it");
+
+        return NoContent();
+    }
 }

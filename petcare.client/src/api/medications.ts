@@ -56,3 +56,18 @@ export async function createMedLog(log: MedicationLog): Promise<MedicationLog> {
   }
   return res.json();
 }
+
+export async function deleteMedication(medicationId: number) {
+  const res = await fetch(`/api/medications/${medicationId}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) {
+    const error: Error & { status?: number } = new Error(
+      'Failed to delete medication'
+    );
+    error.status = res.status;
+    throw error;
+  }
+  return;
+}

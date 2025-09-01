@@ -5,6 +5,7 @@ import formatDate from '@/utils/formatDate';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ScheduleAppointment from './ScheduleAppointment';
 import type { Animal } from '@/types';
+import DeleteButton from '@/components/ui/DeleteButton';
 
 export default function Appointments({
   animals,
@@ -47,6 +48,10 @@ export default function Appointments({
                     <div className="font-bold flex gap-2">
                       {appointment.animalName}
                       <Badge variant="outline">{appointment.type}</Badge>
+                      <DeleteButton
+                        id={appointment.id}
+                        entityType="appointments"
+                      />
                     </div>
 
                     <div className="mt-2 text-xs text-gray-400">

@@ -7,5 +7,6 @@ namespace PetCare.Server.Services.Interfaces
         Task<IEnumerable<UserMedsDTO>> GetAnimalMeds(int id);
         Task<IEnumerable<UserMedsDTO>> GetAllMeds(string ownerId);
         Task<MedicationDTO> AddMedication(MedicationDTO medicationDto);
+        Task<bool> DeleteMedication(int medicationId, string userId);
     }
 }

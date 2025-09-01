@@ -44,4 +44,18 @@ public class MedicationService : IMedicationService
         await context.SaveChangesAsync();
         return mapper.Map<MedicationDTO>(medication);
     }
+
+    public async Task<bool> DeleteMedication(int medicationId, string userId)
+    {
+        var medication = await context.Medications
+            .Include(m => m.Animal)
+            .FirstOrDefaultAsync(m => m.Id == medicationId && m.Animal.OwnerId == userId);
+
+        if (medication == null)
+            return false;
+
+        context.Medications.Remove(medication);
+        await context.SaveChangesAsync();
+        return true;
+    }
 }

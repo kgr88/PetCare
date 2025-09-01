@@ -45,4 +45,18 @@ public class AppointmentService : IAppointmentService
             .ToListAsync();
         return mapper.Map<IEnumerable<AppointmentDTO>>(animalAppointments);
     }
+
+    public async Task<bool> DeleteAppointment(int appointmentId, string userId)
+    {
+        var appointment = await context.Appointments
+            .Include(a => a.Animal)
+            .FirstOrDefaultAsync(a => a.Id == appointmentId && a.Animal.OwnerId == userId);
+
+        if (appointment == null)
+            return false;
+
+        context.Appointments.Remove(appointment);
+        await context.SaveChangesAsync();
+        return true;
+    }
 }

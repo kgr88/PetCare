@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AppRouter from './router';
 import { ThemeProvider } from '@/features/theme/theme-provider';
 import Navbar from '@/features/nav/Navbar';
+import { Toaster } from '@/components/ui/sonner';
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ function App() {
             <Navbar />
             <AppRouter />
           </main>
+          <Toaster />
         </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
