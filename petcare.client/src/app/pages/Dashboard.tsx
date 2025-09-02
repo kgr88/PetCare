@@ -6,7 +6,7 @@ import { useAnimals } from '@/features/animals/hooks/useAnimals';
 export default function Dashboard() {
   const { data: animals, error, isLoading } = useAnimals(false);
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <></>;
   return (
     <>
       <div className="grid md:grid-cols-2 gap-4 mb-4">

@@ -14,17 +14,14 @@ export default function Navbar() {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
+                <Link to="/">
+                  <span className="font-bold text-xl"> PetCare</span>
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
                 <Link to="/dashboard">Dashboard</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link to="/calendar">Calendar</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link to="/notes">Notes</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>

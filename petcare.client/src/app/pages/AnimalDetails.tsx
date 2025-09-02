@@ -4,16 +4,18 @@ import Medications from '@/features/medications/components/Medications';
 import Appointments from '@/features/appointments/components/Appointments';
 import { useAnimals } from '@/features/animals/hooks/useAnimals';
 import WeightHistory from '@/features/weightLogs/components/WeightHistory';
+import CardSkeleton from '@/components/CardSkeleton';
 
 export default function AnimalDetails() {
   const { id } = useParams();
   const animalId = Number(id);
   const { data: animal, error, isLoading } = useAnimals(true, animalId);
   const activeAnimal = Array.isArray(animal) ? animal[0] : animal;
-  if (!animalId || !activeAnimal) return 'An unexpected error has occured';
+  if (isLoading) return <></>;
+  if ((!animalId && !isLoading) || (!activeAnimal && isLoading))
+    return 'An unexpected error has occured';
   return (
     <>
-      {isLoading && <div className="p-6 text-center">Loading...</div>}
       {error && (
         <div className="p-6 text-center text-red-600">
           Error: {error?.message}
@@ -30,7 +32,11 @@ export default function AnimalDetails() {
               <div className="flex-1 rounded-lg w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Medications singleAnimal={true} animalId={animalId} />
+                    <Medications
+                      animals={activeAnimal ? [activeAnimal] : []}
+                      singleAnimal={true}
+                      animalId={animalId}
+                    />
                   </div>
                   <div>
                     <Appointments

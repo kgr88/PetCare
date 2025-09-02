@@ -21,7 +21,12 @@ export default function ScheduleAppointment({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Schedule</Button>
+        <Button
+          disabled={animals === undefined || animals.length == 0}
+          variant="outline"
+        >
+          Schedule
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-fit" aria-describedby={undefined}>
         <DialogHeader>

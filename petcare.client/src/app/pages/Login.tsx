@@ -81,7 +81,7 @@ export default function Login() {
     mutation.mutate(values);
   }
 
-  if (loading) return <p>Checking authentication...</p>;
+  if (loading) return <></>;
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">

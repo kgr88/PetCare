@@ -2,6 +2,7 @@ import { Card, CardHeader } from '@/components/ui/card';
 import { useWeightLogs } from '../hooks/useWeightLogs';
 import WeightChart from './WeightChart';
 import WeightLog from './WeightLog';
+import CardSkeleton from '@/components/CardSkeleton';
 
 export default function WeightHistory({ animalId }: { animalId: number }) {
   const {
@@ -12,7 +13,7 @@ export default function WeightHistory({ animalId }: { animalId: number }) {
   } = useWeightLogs(animalId);
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (isLoading || isFetching || weightLogs === undefined)
-    return <p>Loading...</p>;
+    return <CardSkeleton />;
   return (
     <Card className="h-92 py-2">
       <CardHeader className="font-bold text-xl flex items-center justify-between gap-2">
@@ -22,8 +23,8 @@ export default function WeightHistory({ animalId }: { animalId: number }) {
         </div>
       </CardHeader>
       {!Array.isArray(weightLogs) || !weightLogs.length ? (
-        <div className="w-full h-full flex items-center justify-center text-center text-2xl font-extralight">
-          There are no weight logs yet!
+        <div className="flex h-64 items-center justify-center font-bold text-xl">
+          You don’t have any weight logs yet.
         </div>
       ) : (
         <WeightChart weightLogs={weightLogs} />

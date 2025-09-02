@@ -23,16 +23,17 @@ import {
 } from '@/components/ui/dialog';
 import AddMedicationForm from './AddMedicationForm';
 import type { Animal } from '@/types';
-import DeleteButton from '@/components/ui/DeleteButton';
+import DeleteButton from '@/components/DeleteButton';
+import CardSkeleton from '@/components/CardSkeleton';
 
 export default function Medications({
   animalId,
   singleAnimal = false,
-  animals = [],
+  animals,
 }: {
   animalId?: number;
   singleAnimal?: boolean;
-  animals?: Animal[];
+  animals: Animal[];
 }) {
   const {
     data: medications,
@@ -41,14 +42,12 @@ export default function Medications({
   } = useMedications(singleAnimal, animalId);
 
   const [addMedOpen, setAddMedOpen] = useState(false);
-
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
-  if (isLoading) return <p>Loading...</p>;
-  console.log(medications);
+  if (isLoading) return <CardSkeleton />;
   return (
     <ScrollArea className="max-h-92 shadow-sm rounded-xl overflow-y-auto h-full">
       <Card className="px-4 py-2 gap-0 min-h-92">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-2 mb-4">
           <h1 className="text-lg font-bold">Current Medications</h1>
           <div className="flex gap-2 flex-col lg:flex-row">
             <MedicationLog medications={medications ?? []} />
@@ -61,7 +60,7 @@ export default function Medications({
                   <DialogTitle>Add Medication</DialogTitle>
                 </DialogHeader>
                 <AddMedicationForm
-                  animals={animals}
+                  animals={animals ?? []}
                   onClose={() => setAddMedOpen(false)}
                   closeAction={
                     <DialogClose asChild>
@@ -76,61 +75,76 @@ export default function Medications({
             </Dialog>
           </div>
         </div>
-        <Accordion type="single" collapsible className="w-full">
-          {medications?.map((medication) => (
-            <AccordionItem value={String(medication.id)} key={medication.id}>
-              <AccordionTrigger>
-                <span>
-                  {!singleAnimal ? `${medication.animalName}: ` : ''}
-                  {medication.name}
-                  <Badge variant="outline" className="mx-2">
-                    {medication.dosage}
-                  </Badge>
-                </span>
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-2 text-balance">
-                <div className="flex justify-between">
-                  <div className="flex gap-1">
-                    <Badge variant="default">{medication.startDate}</Badge>
-                    {medication.endDate ? (
-                      <Badge variant="destructive">{medication.endDate}</Badge>
+
+        {!isLoading &&
+        (medications?.length == 0 || medications == undefined) ? (
+          <div className="flex w-full justify-center font-bold text-xl text-center">
+            You don't have any medications currently.
+          </div>
+        ) : (
+          medications?.map((medication) => (
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full"
+              key={medication.id}
+            >
+              <AccordionItem value={String(medication.id)}>
+                <AccordionTrigger>
+                  <span>
+                    {!singleAnimal ? `${medication.animalName}: ` : ''}
+                    {medication.name}
+                    <Badge variant="outline" className="mx-2">
+                      {medication.dosage}
+                    </Badge>
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="flex flex-col gap-2 text-balance">
+                  <div className="flex justify-between">
+                    <div className="flex gap-1">
+                      <Badge variant="default">{medication.startDate}</Badge>
+                      {medication.endDate ? (
+                        <Badge variant="destructive">
+                          {medication.endDate}
+                        </Badge>
+                      ) : (
+                        medication.endDate
+                      )}
+                    </div>
+                    <DeleteButton id={medication.id} entityType="medications" />
+                  </div>
+                  <div>
+                    {medication.lastTaken ? (
+                      <>
+                        <span className="font-bold">Last taken: </span>
+                        <span>
+                          {(() => {
+                            const formatted = formatDate(
+                              new Date(medication.lastTaken)
+                            );
+                            return `${formatted.monthDay} ${formatted.year}, ${formatted.time}`;
+                          })()}
+                        </span>
+                      </>
                     ) : (
-                      medication.endDate
+                      ''
                     )}
                   </div>
-                  <DeleteButton id={medication.id} entityType="medications" />
-                </div>
-                <div>
-                  {medication.lastTaken ? (
-                    <>
-                      <span className="font-bold">Last taken: </span>
-                      <span>
-                        {(() => {
-                          const formatted = formatDate(
-                            new Date(medication.lastTaken)
-                          );
-                          return `${formatted.monthDay} ${formatted.year}, ${formatted.time}`;
-                        })()}
-                      </span>
-                    </>
-                  ) : (
-                    ''
-                  )}
-                </div>
-                <div>
-                  <span className="font-bold">Type: </span>
-                  {medication.type == 'recurring'
-                    ? `Take every ${medication.frequency} ${medication.frequencyType}`
-                    : 'As needed'}
-                </div>
-                <div>
-                  <span className="font-bold">Instructions: </span>
-                  {medication.instructions}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                  <div>
+                    <span className="font-bold">Type: </span>
+                    {medication.type == 'recurring'
+                      ? `Take every ${medication.frequency} ${medication.frequencyType}`
+                      : 'As needed'}
+                  </div>
+                  <div>
+                    <span className="font-bold">Instructions: </span>
+                    {medication.instructions}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ))
+        )}
       </Card>
     </ScrollArea>
   );

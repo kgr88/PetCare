@@ -74,11 +74,7 @@ function AuthorizeView(props: { children: React.ReactNode }) {
   }, []);
 
   if (loading) {
-    return (
-      <>
-        <p>Loading...</p>
-      </>
-    );
+    return <></>;
   } else {
     if (authorized && !loading) {
       return (
