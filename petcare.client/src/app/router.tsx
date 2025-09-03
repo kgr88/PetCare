@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import AnimalDetails from './pages/AnimalDetails';
 import Dashboard from './pages/Dashboard';
 import AuthorizeView from '@/features/auth/AuthorizeView';
+import AccountPage from './pages/AccountPage';
 
 export default function AppRouter() {
   return (
@@ -25,6 +26,14 @@ export default function AppRouter() {
         element={
           <AuthorizeView>
             <Dashboard />
+          </AuthorizeView>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <AuthorizeView>
+            <AccountPage />
           </AuthorizeView>
         }
       />
