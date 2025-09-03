@@ -18,20 +18,22 @@ public class MedicationService : IMedicationService
 
     public async Task<IEnumerable<UserMedsDTO>> GetAnimalMeds(int animalId)
     {
+        var today = DateOnly.FromDateTime(DateTime.Now);
         var animalMeds = await context.Medications
             .Include(m => m.Animal)
             .Include(m => m.MedicationLogs)
-            .Where(m => m.AnimalId == animalId)
+            .Where(m => m.AnimalId == animalId && (m.EndDate == null || m.EndDate >= today))
             .ToListAsync();
         return mapper.Map<IEnumerable<UserMedsDTO>>(animalMeds);
     }
 
     public async Task<IEnumerable<UserMedsDTO>> GetAllMeds(string ownerId)
     {
+        var today = DateOnly.FromDateTime(DateTime.Now);
         var animalMeds = await context.Medications
             .Include(m => m.Animal)
             .Include(m => m.MedicationLogs)
-            .Where(m => m.Animal.OwnerId == ownerId)
+            .Where(m => m.Animal.OwnerId == ownerId && (m.EndDate == null || m.EndDate >= today))
             .ToListAsync();
 
         return mapper.Map<IEnumerable<UserMedsDTO>>(animalMeds);

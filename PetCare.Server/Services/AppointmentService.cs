@@ -20,9 +20,10 @@ public class AppointmentService : IAppointmentService
 
     public async Task<IEnumerable<UserAppointmentsDTO>> GetAppointments(string userId)
     {
+        var today = DateTime.Today;
         var appointments = await context.Appointments
             .Include(m => m.Animal)
-            .Where(a => a.Animal.OwnerId == userId)
+            .Where(a => a.Animal.OwnerId == userId && a.Date >= today)
             .OrderBy(a => a.Date)
             .ToListAsync();
 
@@ -39,9 +40,10 @@ public class AppointmentService : IAppointmentService
 
     public async Task<IEnumerable<AppointmentDTO>> GetAnimalAppointments(int animalId)
     {
+        var today = DateTime.Today;
         var animalAppointments = await context.Appointments
-            .Where(m => m.AnimalId == animalId)
-            .OrderBy(a => a.Date)
+            .Where(a => a.AnimalId == animalId && a.Date >= today)
+            .OrderBy(a => a.Date )
             .ToListAsync();
         return mapper.Map<IEnumerable<AppointmentDTO>>(animalAppointments);
     }
