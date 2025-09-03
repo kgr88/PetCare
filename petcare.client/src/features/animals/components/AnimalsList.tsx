@@ -1,7 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import dogSrc from '../../../assets/dog.jpg';
+import placeholderSrc from '../../../assets/placeholder-animal.jpg';
 import type { Animal } from '@/types';
+
 export default function AnimalsList({ animals }: { animals: Animal[] }) {
   return (
     <div className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -18,8 +19,12 @@ export default function AnimalsList({ animals }: { animals: Animal[] }) {
           >
             <div className="w-full overflow-hidden min-h-0 rounded-lg">
               <img
-                src={dogSrc}
-                alt="Dog"
+                src={
+                  animal.imageUrl == '' || animal.imageUrl == null
+                    ? placeholderSrc
+                    : animal.imageUrl
+                }
+                alt="animal"
                 className="w-full h-full object-cover object-center"
               />
             </div>

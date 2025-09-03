@@ -4,7 +4,6 @@ import Medications from '@/features/medications/components/Medications';
 import Appointments from '@/features/appointments/components/Appointments';
 import { useAnimals } from '@/features/animals/hooks/useAnimals';
 import WeightHistory from '@/features/weightLogs/components/WeightHistory';
-import CardSkeleton from '@/components/CardSkeleton';
 
 export default function AnimalDetails() {
   const { id } = useParams();
