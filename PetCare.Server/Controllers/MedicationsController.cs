@@ -22,9 +22,15 @@ public class MedicationsController : ControllerBase
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-
-        var animalMeds = await medicationService.GetAnimalMeds(animalId);
-        return Ok(animalMeds);
+        try
+        {
+            var animalMeds = await medicationService.GetAnimalMeds(animalId, userId);
+            return Ok(animalMeds);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Forbid(ex.Message);
+        }
     }
 
     [HttpGet]
@@ -32,7 +38,6 @@ public class MedicationsController : ControllerBase
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-
         var animalMeds = await medicationService.GetAllMeds(userId);
         return Ok(animalMeds);
     }
@@ -42,8 +47,15 @@ public class MedicationsController : ControllerBase
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-        var medication = await medicationService.AddMedication(medicationDto);
-        return CreatedAtAction(nameof(GetAnimalMeds), new { animalId = medication.AnimalId }, medication);
+        try
+        {
+            var medication = await medicationService.AddMedication(medicationDto, userId);
+            return CreatedAtAction(nameof(GetAnimalMeds), new { animalId = medication.AnimalId }, medication);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Forbid(ex.Message);
+        }
     }
 
     [HttpDelete]
@@ -52,7 +64,6 @@ public class MedicationsController : ControllerBase
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-
         var deleted = await medicationService.DeleteMedication(medicationId, userId);
         if (!deleted)
             return NotFound("Medication not found or you don't have permission to delete it");

@@ -16,8 +16,13 @@ public class MedicationService : IMedicationService
         this.mapper = mapper;
     }
 
-    public async Task<IEnumerable<UserMedsDTO>> GetAnimalMeds(int animalId)
+    public async Task<IEnumerable<UserMedsDTO>> GetAnimalMeds(int animalId, string userId)
     {
+        var animal = await context.Animals
+            .FirstOrDefaultAsync(a => a.Id == animalId && a.OwnerId == userId);
+        if (animal == null)
+            throw new UnauthorizedAccessException("You don't have permission to view medications for this animal.");
+
         var today = DateOnly.FromDateTime(DateTime.Now);
         var animalMeds = await context.Medications
             .Include(m => m.Animal)
@@ -39,8 +44,13 @@ public class MedicationService : IMedicationService
         return mapper.Map<IEnumerable<UserMedsDTO>>(animalMeds);
     }
 
-    public async Task<MedicationDTO> AddMedication(MedicationDTO medicationDto)
+    public async Task<MedicationDTO> AddMedication(MedicationDTO medicationDto, string userId)
     {
+        var animal = await context.Animals
+            .FirstOrDefaultAsync(a => a.Id == medicationDto.AnimalId && a.OwnerId == userId);
+        if (animal == null)
+            throw new UnauthorizedAccessException("You don't have permission to add medications for this animal.");
+
         var medication = mapper.Map<Medication>(medicationDto);
         context.Medications.Add(medication);
         await context.SaveChangesAsync();
@@ -52,7 +62,6 @@ public class MedicationService : IMedicationService
         var medication = await context.Medications
             .Include(m => m.Animal)
             .FirstOrDefaultAsync(m => m.Id == medicationId && m.Animal.OwnerId == userId);
-
         if (medication == null)
             return false;
 

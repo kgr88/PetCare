@@ -16,12 +16,12 @@ public class AnimalsController : Controller
     {
         this.animalService = animalService;
     }
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Animal>>> GetAnimals()
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-
         var animals = await animalService.GetUserAnimals(userId);
         return Ok(animals);
     }
@@ -34,7 +34,7 @@ public class AnimalsController : Controller
         try
         {
             var animal = await animalService.AddAnimal(animalDto, userId);
-            return CreatedAtAction(nameof(GetAnimals), new { id = animal.Id }, animal);
+            return CreatedAtAction(nameof(GetAnimalDetails), new { animalId = animal.Id }, animal);
         }
         catch (Exception ex)
         {
@@ -48,10 +48,10 @@ public class AnimalsController : Controller
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-
-        var animalDetails = await animalService.GetAnimalDetails(animalId);
+        var animalDetails = await animalService.GetAnimalDetails(animalId, userId);
         if (animalDetails == null)
-            return NotFound();
+            return NotFound("Animal not found or you don't have permission to view it");
+        
         return Ok(animalDetails);
     }
 }

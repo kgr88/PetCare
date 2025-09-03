@@ -22,8 +22,16 @@ public class MedicationLogsController : ControllerBase
     {
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
-        var logs = await medicationLogService.GetLogs(medicationId);
-        return Ok(logs);
+
+        try
+        {
+            var logs = await medicationLogService.GetLogs(medicationId, userId);
+            return Ok(logs);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Forbid(ex.Message);
+        }
     }
 
     [HttpPost]
@@ -32,7 +40,14 @@ public class MedicationLogsController : ControllerBase
         if (User.FindFirstValue(ClaimTypes.NameIdentifier) is not string userId)
             return Unauthorized();
 
-        var log = await medicationLogService.AddLog(logDto);
-        return CreatedAtAction(nameof(GetLogs), new { medicationId = log.MedicationId }, log);
+        try
+        {
+            var log = await medicationLogService.AddLog(logDto, userId);
+            return CreatedAtAction(nameof(GetLogs), new { medicationId = log.MedicationId }, log);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Forbid(ex.Message);
+        }
     }
 }

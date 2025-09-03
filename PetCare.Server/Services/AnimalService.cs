@@ -18,10 +18,10 @@ public class AnimalService : IAnimalService
         this.mapper = mapper;
     }
 
-    public async Task<IEnumerable<AnimalDTO>> GetUserAnimals(string ownerId)
+    public async Task<IEnumerable<AnimalDTO>> GetUserAnimals(string userId)
     {
         var animals = await context.Animals
-            .Where(a => a.OwnerId == ownerId)
+            .Where(a => a.OwnerId == userId)
             .ToListAsync();
 
         return animals.Select(a => mapper.Map<AnimalDTO>(a));
@@ -37,16 +37,14 @@ public class AnimalService : IAnimalService
         return mapper.Map<AnimalDTO>(animal);
     }
 
-    public async Task<AnimalDTO?> GetAnimalDetails(int animalId)
+    public async Task<AnimalDTO?> GetAnimalDetails(int animalId, string userId)
     {
         var animalDetails = await context.Animals
-            .Where(a => a.Id == animalId)
+            .Where(a => a.Id == animalId && a.OwnerId == userId)
             .SingleOrDefaultAsync();
-
         if (animalDetails == null)
             return null;
 
         return mapper.Map<AnimalDTO>(animalDetails);
     }
-
 }

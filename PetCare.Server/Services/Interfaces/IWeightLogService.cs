@@ -5,6 +5,6 @@ namespace PetCare.Server.Services.Interfaces;
 
 public interface IWeightLogService
 {
-    Task<WeightLogDTO> AddWeightLog(CreateWeightLogDTO dto);
-    Task<IEnumerable<WeightLogDTO>> GetAnimalWeightLogs(int animalId);
+    Task<WeightLogDTO> AddWeightLog(CreateWeightLogDTO dto, string userId);
+    Task<IEnumerable<WeightLogDTO>> GetAnimalWeightLogs(int animalId, string userId);
 }

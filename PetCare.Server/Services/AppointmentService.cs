@@ -30,20 +30,30 @@ public class AppointmentService : IAppointmentService
         return mapper.Map<IEnumerable<UserAppointmentsDTO>>(appointments);
     }
 
-    public async Task<AppointmentDTO> AddAppointment(AppointmentDTO appointmentDto)
+    public async Task<AppointmentDTO> AddAppointment(AppointmentDTO appointmentDto, string userId)
     {
+        var animal = await context.Animals
+            .FirstOrDefaultAsync(a => a.Id == appointmentDto.AnimalId && a.OwnerId == userId);
+        if (animal == null)
+            throw new UnauthorizedAccessException("You don't have permission to create appointments for this animal.");
+
         var appointment = mapper.Map<Appointment>(appointmentDto);
         context.Appointments.Add(appointment);
         await context.SaveChangesAsync();
         return mapper.Map<AppointmentDTO>(appointment);
     }
 
-    public async Task<IEnumerable<AppointmentDTO>> GetAnimalAppointments(int animalId)
+    public async Task<IEnumerable<AppointmentDTO>> GetAnimalAppointments(int animalId, string userId)
     {
+        var animal = await context.Animals
+            .FirstOrDefaultAsync(a => a.Id == animalId && a.OwnerId == userId);
+        if (animal == null)
+            throw new UnauthorizedAccessException("You don't have permission to view appointments for this animal.");
+
         var today = DateTime.Today;
         var animalAppointments = await context.Appointments
             .Where(a => a.AnimalId == animalId && a.Date >= today)
-            .OrderBy(a => a.Date )
+            .OrderBy(a => a.Date)
             .ToListAsync();
         return mapper.Map<IEnumerable<AppointmentDTO>>(animalAppointments);
     }

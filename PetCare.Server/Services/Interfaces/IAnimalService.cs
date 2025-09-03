@@ -4,7 +4,7 @@ namespace PetCare.Server.Services.Interfaces;
 
 public interface IAnimalService
 {
-    Task<IEnumerable<AnimalDTO>> GetUserAnimals(string ownerId);
+    Task<IEnumerable<AnimalDTO>> GetUserAnimals(string userId);
     Task<AnimalDTO> AddAnimal(AnimalDTO animalDto, string ownerId);
-    Task<AnimalDTO?> GetAnimalDetails(int animalId);
+    Task<AnimalDTO?> GetAnimalDetails(int animalId, string userId);
 }
